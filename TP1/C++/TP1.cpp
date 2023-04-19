@@ -15,7 +15,7 @@
 #define PROCESO_C 1
 #define PROCESO_E 0
 
-#define TIEMPO_DORMIDO 60
+#define TIEMPO_DORMIDO 30
 #define INICIO_ITERADOR 0
 #define PROCESO_CREADO_CORRECTAMENTE 0
 #define PROCESO_SIN_HIJOS 0
@@ -48,13 +48,15 @@ void mostrarMiInformacion(char letra, pid_t miPid, pid_t miParentPid)
 class IProceso 
 {
   protected:
-    pid_t miPid;
-    pid_t miPPid;
-    char letra;
-    int cantidadHijos;
+    pid_t _miPid;
+    pid_t _miPPid;
+    char _letra;
+    int _cantidadHijos;
 
   public:
-    IProceso(pid_t pid, pid_t ppid, char caracter, int hijos) : miPid(pid), miPPid(ppid), letra(caracter), cantidadHijos(hijos) {}
+    IProceso(pid_t pid, pid_t ppid, char caracter, int hijos) : _miPid(pid), _miPPid(ppid), _letra(caracter), _cantidadHijos(hijos) 
+    {
+    }
     virtual void realizarAccion() = SALIDA_EXITOSA;
 };
 
@@ -62,11 +64,13 @@ class IProceso
 class ProcesoConHijos : public IProceso 
 {
   public:
-    ProcesoConHijos(pid_t pid, pid_t ppid, char caracter, int hijos) : IProceso(pid, ppid, caracter, hijos) {}
+    ProcesoConHijos(pid_t pid, pid_t ppid, char caracter, int hijos) : IProceso(pid, ppid, caracter, hijos) 
+    {
+    }
     void realizarAccion() override 
     {
-      mostrarMiInformacion(this->letra,this->miPid,this->miPPid);
-      esperarPorMisHijos(this->cantidadHijos);
+      mostrarMiInformacion(this->_letra,this->_miPid,this->_miPPid);
+      esperarPorMisHijos(this->_cantidadHijos);
     }
 };
 
@@ -74,10 +78,12 @@ class ProcesoConHijos : public IProceso
 class ProcesoSinHijos : public IProceso 
 {
   public:
-    ProcesoSinHijos(pid_t pid, pid_t ppid, char caracter, int hijos) : IProceso(pid, ppid, caracter, hijos) {}
+    ProcesoSinHijos(pid_t pid, pid_t ppid, char caracter, int hijos) : IProceso(pid, ppid, caracter, hijos) 
+    {
+    }
     void realizarAccion() override 
     {
-      mostrarMiInformacion(this->letra,this->miPid,this->miPPid);
+      mostrarMiInformacion(this->_letra,this->_miPid,this->_miPPid);
       sleep(TIEMPO_DORMIDO);
     }
 };
