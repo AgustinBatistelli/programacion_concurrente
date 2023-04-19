@@ -1,69 +1,26 @@
 import os
 import time
 
-hijos_del_proceso_a = ["B", "C", "D"]
-hijos_del_proceso_b = ["E", "F"]
-hijos_del_proceso_d = ["G"]
-
-proceso_a = "A"
-proceso_b = "B"
-proceso_c = "C"
-proceso_d = "D"
-
-pid_hijos_del_proceso_a = []
-
-def proceso_padre():
-  mostrar_salida(proceso_a, os.getpid(), os.getppid()) 
-  
-  for hijo_de_a in hijos_del_proceso_a:
-    pid = os.fork()
+def son(data, value = None):
+ if value == None:
+  value = data.get('start')
+ 
+ children_pids = []
+ if value in data.get('processes').keys(): 
+  for son_value in data.get('processes').get(value):
+   pid = os.fork()
+   if pid:
+    children_pids.append(pid)
+   else:
+    son(data, son_value)
+    return
     
-    if pid < 0 :
-      print("Error al crear el nuevo procesos: ", hijo_de_a)
-      os._exit(1)
-    
-    evaluar_pid(hijo_de_a, pid)
+  for child_pid in children_pids:
+   os.waitpid(child_pid, 0)
 
-  proceso_pid_hijos(pid_hijos_del_proceso_a)
-  os._exit(0)
-    
-def evaluar_pid(proceso_hijo, pid):
-  if pid:
-    pid_hijos_del_proceso_a.append(pid)  
-  else:
-    if proceso_hijo == proceso_b:
-      procesos_hijos(proceso_b,hijos_del_proceso_b)
-      os._exit(0)
-    if proceso_hijo == proceso_c:
-      mostrar_salida(proceso_c, os.getpid(), os.getppid())
-      os._exit(0)
-    else:
-      procesos_hijos(proceso_d,hijos_del_proceso_d)
-      os._exit(0) 
+ print('My value is: {}. My PID is: {}. My PPID is: {}'.format(value, os.getpid(), os.getppid())) 
+ time.sleep(25)
 
-def procesos_hijos(proceso, lista_procesos_hijos):
-  mostrar_salida(proceso, os.getpid(), os.getppid())
-  pid_hijos_del_proceso = [] 
-  for proceso_hijo in lista_procesos_hijos:
-    pid = os.fork()
-    if pid < 0 :
-      print("Error al crear el nuevo procesos: ", proceso_hijo)
-      os._exit(1)
-    if pid:
-         pid_hijos_del_proceso.append(pid)
-    else:
-        mostrar_salida(proceso_hijo, os.getpid(), os.getppid())
-        os._exit(0)
-  
-  proceso_pid_hijos(pid_hijos_del_proceso)
-  os._exit(0)  
-
-def proceso_pid_hijos(pid_hijos_del_proceso):
-  for pid_hijo in pid_hijos_del_proceso:
-    os.waitpid(pid_hijo, 0)    
-
-def mostrar_salida(nombre_proceso, pid, ppid):
-  print("Proceso: ", nombre_proceso, " - PID: ", pid, " - PID del padre: ", ppid)
-  time.sleep(10)
-
-proceso_padre()
+if __name__ == '__main__':
+ data = {'start': 'A','processes': {'A': ['B', 'C', 'D'],'B': ['E', 'F'],'D': ['G']}}
+ son(data)
