@@ -122,28 +122,28 @@ public class Hilos {
     }
 	
   	public static boolean esNumero(String parametro)
-	  {
-		  try
-		  {
-			  int numero = Integer.parseInt(parametro);
-			  return true;
-		  }
-		  catch( NumberFormatException ex)
-		  {
-			  System.out.println("El parametro no es un numero");
-			  return false;
-		  }
-	  }
+	{
+		try
+		{
+		  int numero = Integer.parseInt(parametro);
+		  return true;
+		}
+		catch( NumberFormatException ex)
+		{
+		  System.out.println("El parametro no es un numero");
+		  return false;
+		}
+	}
 	
 	public static boolean validarRango(int valor)
-  {
+	{
 		int rangoMinimo = 5;
-	  int rangoMaximo = 20;
-		if (valor <= rangoMinimo && valor >= rangoMaximo)
-    {
-      System.out.println("El tamaño de la matriz debe estar entre 5 y 20.");
-      return false;
-    }
+		int rangoMaximo = 20;
+		if (valor <= rangoMinimo || valor >= rangoMaximo)
+		{
+			System.out.println("El tamaño de la matriz debe estar entre 5 y 20.");
+			return false;
+		}
 		return true;
 	}
 
