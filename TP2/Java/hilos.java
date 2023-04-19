@@ -1,5 +1,4 @@
 import java.util.Random;
-
 public class Hilos {
 
     public static int[][] multiplicarMatircesHilos(int[][] matrizA, int[][] matrizB, int tamanio) throws InterruptedException
@@ -121,6 +120,45 @@ public class Hilos {
         }
         return true;
     }
+	
+  	public static boolean esNumero(String parametro)
+	  {
+		  try
+		  {
+			  int numero = Integer.parseInt(parametro);
+			  return true;
+		  }
+		  catch( NumberFormatException ex)
+		  {
+			  System.out.println("El parametro no es un numero");
+			  return false;
+		  }
+	  }
+	
+	public static boolean validarRango(int valor)
+  {
+		int rangoMinimo = 5;
+	  int rangoMaximo = 20;
+		if (valor <= rangoMinimo && valor >= rangoMaximo)
+    {
+      System.out.println("El tamaño de la matriz debe estar entre 5 y 20.");
+      return false;
+    }
+		return true;
+	}
+
+
+    public static void mostrarResultado(int[][] matrizA, int[][] matrizB, int[][] matrizCS, int[][] matrizCH)
+    {
+        System.out.println("Matriz A: ");
+        mostrarMatriz(matrizA);
+        System.out.println("Matriz B: ");
+        mostrarMatriz(matrizB);
+        System.out.println("Matriz CS: ");
+        mostrarMatriz(matrizCS);   
+        System.out.println("Matriz CH: ");
+        mostrarMatriz(matrizCH);   
+    }
 
     public static void main(String[] args) throws Exception {
         if (args.length != 1)
@@ -129,14 +167,19 @@ public class Hilos {
             return;
         } 
         
-        int tamanio = Integer.parseInt(args[0]);
+        String parametro = args[0];
 
-        if (tamanio < 5 || tamanio > 20)
-        {
-            System.out.println("El tamaño de la matriz debe estar entre 5 y 20.");
-            return;
-        }
-
+		    if (!esNumero(parametro))
+		    {
+          return;
+        }	   
+        
+        int tamanio = Integer.parseInt(parametro);
+        if (!validarRango(tamanio))
+		    {
+		    	return;
+	  	  }		
+		       
         int[][] matrizA = new int[tamanio][tamanio];
         int[][] matrizB = new int[tamanio][tamanio];
         
@@ -152,22 +195,14 @@ public class Hilos {
 
         try
         {
-          matrizCH = multiplicarMatircesHilos(matrizA, matrizB, tamanio);
+        matrizCH = multiplicarMatircesHilos(matrizA, matrizB, tamanio);
         } catch(InterruptedException e)
         {
             System.out.println("Error al multiplicar las matrices: " + e.getMessage());
             return;
-        }
+        }  
 
-
-        System.out.println("Matriz A: ");
-        mostrarMatriz(matrizA);
-        System.out.println("Matriz B: ");
-        mostrarMatriz(matrizB);
-        System.out.println("Matriz CS: ");
-        mostrarMatriz(matrizCS);   
-        System.out.println("Matriz CH: ");
-        mostrarMatriz(matrizCH);   
+        mostrarResultado(matrizA, matrizB, matrizCS, matrizCH);
 
         if (sonMatricesIguales(matrizCS, matrizCH))
         {
@@ -177,5 +212,6 @@ public class Hilos {
         {
             System.out.println("La matrizCS no es igual que la matrizCH");
         }        
+        return;
     }
 }
