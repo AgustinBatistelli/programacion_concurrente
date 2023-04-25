@@ -30,7 +30,7 @@ public class ProcessTree
 
   }
 
-  public static void waitForChildren(List children) 
+  public static void waitForChildren(List<Process> children) 
   {
     for(Process child : children) 
     {
@@ -88,9 +88,9 @@ public class ProcessTree
     }
   }
 
-  public static ArrayList<Process> spawnChildren(HashMap<String, ArrayList<String>> dataMap, String self) 
+  public static List<Process> spawnChildren(HashMap<String, ArrayList<String>> dataMap, String self) 
   {
-    ArrayList<Process> children = new ArrayList<>();
+    List<Process> children = new ArrayList<>();
     if (dataMap.keySet().contains(self)) 
     {
       for(String childValue : dataMap.get(self)) 
