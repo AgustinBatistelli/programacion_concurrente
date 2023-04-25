@@ -44,10 +44,10 @@ public class ProcessTree
     }
   }
 
-  public static HashMap> getDataMap() 
+  public static HashMap<String, ArrayList<String>> getDataMap() 
   {
     Gson gson = new Gson();
-    Type customType = new TypeToken>>() {}.getType();
+    Type customType = new TypeToken<HashMap<String, ArrayList<String>>>() {}.getType();
     return gson.fromJson(getFileData(DATA_FILE_NAME), customType); 
   }
 
@@ -88,9 +88,9 @@ public class ProcessTree
     }
   }
 
-  public static ArrayList spawnChildren(HashMap> dataMap, String self) 
+  public static ArrayList<Process> spawnChildren(HashMap<String, ArrayList<String>> dataMap, String self) 
   {
-    ArrayList children = new ArrayList<>();
+    ArrayList<Process> children = new ArrayList<>();
     if (dataMap.keySet().contains(self)) 
     {
       for(String childValue : dataMap.get(self)) 
