@@ -41,7 +41,7 @@ void LlenarMatricesAleatorio();
 void MultiplicarMatricesSecuencial();
 void MultiplicarMatricesConHilos(int cantidad_hilos);
 void MostrarMatrices();
-void FuncionEJecutadaPorHilo(int numeroHilo);
+void FuncionEjecutadaPorHilo(int numero_hilo);
 void CompararMatricesResultado();
 
 MatricesHilos matriz_hilos;
@@ -59,14 +59,14 @@ int main(int argc, char* argv[])
     std::cout<<"El parametro que usted ingreso no es un entero positivo"<<std::endl;
     return PARAMETRO_NO_ENTERO;
   }
-  int tamanioMatrices = atoi(argv[1]);
-  if (!RangoValidoN(tamanioMatrices,RANGO_MINIMO,RANGO_MAXIMO))
+  int tamanio_matrices = atoi(argv[1]);
+  if (!RangoValidoN(tamanio_matrices,RANGO_MINIMO,RANGO_MAXIMO))
   {
     std::cout<<"El rango de N debe estar entre 5 y 20"<<std::endl;
     return N_FUERA_DE_RANGO;
   }
   
-  matriz_hilos = LlenarEstructura(tamanioMatrices);
+  matriz_hilos = LlenarEstructura(tamanio_matrices);
   LlenarMatricesAleatorio();
   MultiplicarMatricesSecuencial();
   MultiplicarMatricesConHilos(matriz_hilos.cantidad_hilos);
@@ -169,7 +169,7 @@ void MultiplicarMatricesConHilos(int cantidad_hilos)
   std::vector<std::thread> hilos;
   for (int i = INICIO_ITERADOR; i < cantidad_hilos; i++)
   {
-    hilos.emplace_back(FuncionEJecutadaPorHilo,i);
+    hilos.emplace_back(FuncionEjecutadaPorHilo,i);
   }
   for (auto& hilo : hilos) 
   {
@@ -185,13 +185,13 @@ void MostrarMatrices()
   MostrarMatriz(matriz_hilos.matriz_ch,matriz_hilos.tamanio_matriz,"Matriz CH");
 }
 
-void FuncionEJecutadaPorHilo(int numeroHilo)
+void FuncionEjecutadaPorHilo(int numero_hilo)
 {
   for (int j = INICIO_ITERADOR; j < matriz_hilos.tamanio_matriz; j++)
   {
     for (int k = INICIO_ITERADOR; k < matriz_hilos.tamanio_matriz; k++)
     {
-      matriz_hilos.matriz_ch[numeroHilo][j] += matriz_hilos.matriz_a[numeroHilo][k] * matriz_hilos.matriz_b[k][j];
+      matriz_hilos.matriz_ch[numero_hilo][j] += matriz_hilos.matriz_a[numero_hilo][k] * matriz_hilos.matriz_b[k][j];
     }
   }
 }
