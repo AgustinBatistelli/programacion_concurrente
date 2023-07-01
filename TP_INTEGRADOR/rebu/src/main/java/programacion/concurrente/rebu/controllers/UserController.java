@@ -11,23 +11,29 @@ import programacion.concurrente.rebu.model.User;
 import programacion.concurrente.rebu.services.UserService;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/progra")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 	
-	@GetMapping()
+//	@GetMapping()
+//	public String getLogin() {
+//		User user = userService.login("Carlos", "Maidana");
+//		return "Se ha logeado " + user.getLogin();
+//	}
+
+	@GetMapping("/login")
 	public String getLogin() {
-		User user = userService.login("Carlos", "Maidana");
-		return "Se ha logeado " + user.getLogin();
+		return "login";
 	}
 	
-	@PostMapping("/login")
-	public String login(@RequestParam(name = "user") String userName, @RequestParam(name = "password") String password) {
-		User user = userService.login(userName, password);
-		return (user == null? "El usuario no existe" : "Se ha loggeado " + user.getLogin());
-	}
+	
+//	@PostMapping("/login")
+//	public String login(@RequestParam(name = "user") String userName, @RequestParam(name = "password") String password) {
+//		User user = userService.login(userName, password);
+//		return (user == null? "El usuario no existe" : "Se ha loggeado " + user.getLogin());
+//	}
 	
 	@PostMapping("/signup")
 	public String signup() {
